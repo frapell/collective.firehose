@@ -1,0 +1,40 @@
+<dl class="portlet mostVisitedContent"
+    i18n:domain="collective.firehose"
+    tal:define="plone_view context/@@plone;
+                results view/getMostVisitedContent;
+                viewActions here/portal_properties/site_properties/typesUseViewActionInListings|python:();
+                getIcon nocall:plone_view/getIcon;">
+
+    <dt class="portletHeader" tal:condition="view/getHeader">
+        <span class="portletTopLeft"></span>
+        <span tal:content="view/getHeader" />
+        <span class="portletTopRight"></span>
+    </dt>
+
+    <tal:elements tal:repeat="result results">
+    <dd class="portletItem"
+        tal:define="obj        python:result[0];
+                    oddrow     repeat/result/odd;
+                    useView    python:obj.portal_type in viewActions;
+                    itemUrl    python:useView and obj.absolute_url() + '/view' or obj.absolute_url();
+                    item_icon  python:getIcon(obj);"
+
+        tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
+        <a href="#"
+           class="tile"
+           tal:attributes="href itemUrl;
+                           title obj/Description">
+            <img tal:replace="structure item_icon/html_tag" />
+            <span tal:replace="obj/pretty_title_or_id">
+             Title
+            </span>
+        </a>
+    </dd>
+    </tal:elements>
+
+    <dd class="portletFooter">
+        <span class="portletBottomLeft"></span>
+        <span class="portletBottomRight"></span>
+    </dd>
+
+</dl>

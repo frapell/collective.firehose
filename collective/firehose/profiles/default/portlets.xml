@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<portlets
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="collective.firehose">
+
+ <portlet title="Most visited content"
+    addview="collective.firehose.MostVisitedContentPortlet"
+    description="A portlet that will show most visited content in a given amount of time, ordered by hits"
+    i18n:attributes="title; description">
+  <for interface="plone.app.portlets.interfaces.IColumn" />
+  <for interface="plone.app.portlets.interfaces.IDashboard" />
+ </portlet>
+
+ <!--
+ <assignment
+    manager="plone.rightcolumn"
+    category="context"
+    key="/"
+    type="collective.firehose.MostVisitedContentPortlet"
+    name="most-visited-content"
+        /> -->
+
+</portlets>

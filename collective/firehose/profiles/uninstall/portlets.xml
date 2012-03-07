@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<portlets>
+ <assignment
+    remove="True"
+    manager="plone.rightcolumn"
+    category="context"
+    key="/"
+    type="collective.firehose.MostVisitedContentPortlet"
+    name="most-visited-content"
+    />
+</portlets>

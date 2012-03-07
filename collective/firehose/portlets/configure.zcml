@@ -1,0 +1,17 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="collective.firehose">
+
+     <plone:portlet
+         name="collective.firehose.MostVisitedContentPortlet"
+         interface=".most_visited.IMostVisitedContentPortlet"
+         assignment=".most_visited.Assignment"
+         edit_permission="cmf.ManagePortal"
+         renderer=".most_visited.Renderer"
+         addview=".most_visited.AddForm"
+         editview=".most_visited.EditForm"
+         />
+
+</configure>
