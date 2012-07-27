@@ -1,0 +1,21 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="collective.firehose">
+
+  <browser:page
+    for="*"
+    name="store_hit"
+    class=".0mq.Hit"
+    permission="zope.Public"
+    />
+
+  <browser:page
+    for="*"
+    name="store_visit_time"
+    class=".0mq.VisitTime"
+    permission="zope.Public"
+    />
+
+</configure>
