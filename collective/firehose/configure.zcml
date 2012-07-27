@@ -4,14 +4,14 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     i18n_domain="collective.firehose">
-
+<!--
   <subscriber handler=".zope2.handle_start"
               for="ZPublisher.interfaces.IPubStart" />
   <subscriber handler=".zope2.handle_end"
               for="ZPublisher.interfaces.IPubSuccess" />
   <subscriber handler=".zope2.handle_end"
               for="ZPublisher.interfaces.IPubFailure" />
-
+-->
   <permission id="collective.firehose.ViewStats"
               title="collective.firehose: View stats" />
 
@@ -42,5 +42,13 @@
     template="stats.pt"
     permission="collective.firehose.ViewStats"
     />
+
+  <browser:page
+      name="firehose-settings"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".controlpanel.FirehoseSettingsControlPanel"
+      permission="cmf.ManagePortal"
+      />
+
 
 </configure>
