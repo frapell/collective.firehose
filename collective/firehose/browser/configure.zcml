@@ -18,4 +18,20 @@
     permission="zope.Public"
     />
 
+  <browser:page
+    for="*"
+    name="should_store_hits"
+    class=".conditions.Conditions"
+    permission="zope.Public"
+    attribute="store_hits"
+    />
+
+  <browser:page
+    for="*"
+    name="should_store_visit_time"
+    class=".conditions.Conditions"
+    permission="zope.Public"
+    attribute="store_visit_time"
+    />
+
 </configure>

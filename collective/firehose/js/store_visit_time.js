@@ -15,9 +15,19 @@ $(document).ready(function() {
 
     $(window).bind('unload', function(){
         var url = window.location.href + '/@@store_visit_time';
-        $.post(url,
-               {'visited_time':active_time},
-               function(results){});
+        var params = {'visited_time':active_time};
+        
+        // Chrome needs this to be asynchronous to work 
+        $.ajax({ 
+                async: false,
+                type: "POST", 
+                url: url, 
+                data: params, 
+                timeout: 500,
+                success: function(msg){ 
+                        //None 
+                    } 
+                }); 
     })
 
     // test
