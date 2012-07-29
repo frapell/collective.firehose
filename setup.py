@@ -38,5 +38,6 @@ setup(name='collective.firehose',
       target = plone
       [console_scripts]
       firehose-record = collective.firehose.recorder:record_stats
+      firehose-console = collective.firehose.recorder:console_stats
       """,
       )

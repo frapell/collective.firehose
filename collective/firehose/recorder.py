@@ -2,6 +2,19 @@ import time
 import redis
 import zmq
 
+def console_stats():
+
+    try:
+        context = zmq.Context()
+        sub = context.socket(zmq.SUB)
+        sub.bind('ipc:///tmp/collective.firehose.sock')
+        sub.setsockopt(zmq.SUBSCRIBE, '')
+        while True:
+            print "Receiving"
+            print sub.recv()
+
+    except (KeyboardInterrupt, SystemExit):
+        pass
 
 def record_stats():
 
