@@ -16,9 +16,8 @@ zmq_pub.connect("ipc:///tmp/collective.firehose.sock")
 config = getConfiguration()
 try:
     instance_id = config.product_config['firehose']['instance_id']
-except KeyError:
+except (KeyError, AttributeError):
     instance_id = os.getpid()
-
 
 def handle_start(event):
     request = event.request
