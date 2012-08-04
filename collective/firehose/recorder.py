@@ -1,6 +1,9 @@
-import time
+# import time
+import json
 import redis
 import zmq
+from datetime import datetime
+
 
 def console_stats():
 
@@ -27,27 +30,29 @@ def record_stats():
         r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
         while True:
-            instance_id, rest = sub.recv().split(' ', 1)
-            url, elapsed = rest.rsplit(' ', 1)
+
+            msg = sub.recv()
+            msg = json.loads(msg)
+
             pipe = r.pipeline()
+            if msg['msg_type'] == "hit":
+                try:
+                    section = msg['path'][0]
+                except IndexError:
+                    section = None
 
-            # track current requests
-            if elapsed == '0':
-                pipe.sadd('serving', '%s:%s' % (instance_id, url))
-            else:
-                pipe.srem('serving', '%s:%s' % (instance_id, url))
+                pipe.incr('hits|%s' % msg['date'])
+                pipe.hincrby('users_visits|%s' % msg['date'], msg['userid'], 1)
+                if section:
+                    pipe.hincrby('visited_sections|%s' % msg['date'], section, 1)
 
-                # track top hits per hour
-                timeslot = time.time() // 3600
-                pipe.zincrby('tophits.%s' % timeslot, url, 1)
+            if msg['msg_type'] == "visit_time":
+                pipe.rpush('visit_time|%s' % msg['date'], msg['visited_time'])
 
-                # track slowest hits per hour (in ms)
-                slowkey = 'elapsed.%s' % timeslot
-                old_elapsed = r.zscore(slowkey, url)
-                if old_elapsed is None or float(elapsed) > float(old_elapsed):
-                    pipe.zincrby(slowkey, url, elapsed)
+            #full_date = datetime.strptime("%s %s"%(date,time), "%Y-%m-%d %H:%M:%S.%f")
 
             pipe.execute()
+
     except (KeyboardInterrupt, SystemExit):
         pass
     except:

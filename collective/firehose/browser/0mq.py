@@ -1,7 +1,10 @@
 
+import json
 import zmq
 
 from datetime import datetime
+
+from zope.site.hooks import getSite
 
 from plone.uuid.interfaces import IUUID
 
@@ -36,11 +39,25 @@ class Hit(BrowserView):
 
         url = self.request.URL1
 
-        zmq_pub.send('hit %s %s %s %s %s' % (date,
-                                             visitor_ip,
-                                             userid,
-                                             uuid,
-                                             url))
+        portal = getSite()
+        portal_path = portal.getPhysicalPath()
+
+        try:
+            path = self.context.getPhysicalPath()
+            path = path[len(portal_path):]
+        except:
+            path = tuple()
+
+        msg = {'msg_type': 'hit',
+               'date': date.strftime("%Y-%m-%d"),
+               'time': date.strftime("%H:%M:%S"),
+               'visitor_ip': visitor_ip,
+               'userid': userid,
+               'uuid': uuid,
+               'url': url,
+               'path': path }
+
+        zmq_pub.send(json.dumps(msg))
 
         return
 
@@ -66,11 +83,25 @@ class VisitTime(BrowserView):
 
         url = self.request.URL1
 
-        zmq_pub.send('visit_time %s %s %s %s %s %s' % (date,
-                                                       visitor_ip,
-                                                       userid,
-                                                       uuid,
-                                                       url,
-                                                       visited_time))
+        portal = getSite()
+        portal_path = portal.getPhysicalPath()
+        
+        try:
+            path = self.context.getPhysicalPath()
+            path = path[len(portal_path):]
+        except:
+            path = tuple()
+
+        msg = {'msg_type': 'visit_time',
+               'date': date.strftime("%Y-%m-%d"),
+               'time': date.strftime("%H:%M:%S"),
+               'visitor_ip': visitor_ip,
+               'userid': userid,
+               'uuid': uuid,
+               'url': url,
+               'path': path,
+               'visited_time': visited_time }
+
+        zmq_pub.send(json.dumps(msg))
 
         return
